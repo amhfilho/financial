@@ -11,10 +11,10 @@ import static org.junit.Assert.assertEquals;
 
 public class CheckingAccountTest {
 
-    Transaction compra1 = new Transaction("Compra 1", new BigDecimal("-200"), LocalDate.of(2018, Month.OCTOBER,23));
-    Transaction compra3 = new Transaction("Compra 3", new BigDecimal("-150"), LocalDate.of(2018, Month.OCTOBER,23));
-    Transaction compra2 = new Transaction("Compra 2", new BigDecimal("-300"), LocalDate.of(2018, Month.OCTOBER,22));
-    Transaction salario = new Transaction("Salário", new BigDecimal("600"), LocalDate.of(2018, Month.OCTOBER,25));
+    Transaction transaction1 = new Transaction("Compra 1", new BigDecimal("-200"), LocalDate.of(2018, Month.OCTOBER,23));
+    Transaction transaction2 = new Transaction("Compra 3", new BigDecimal("-150"), LocalDate.of(2018, Month.OCTOBER,23));
+    Transaction transaction3 = new Transaction("Compra 2", new BigDecimal("-300"), LocalDate.of(2018, Month.OCTOBER,22));
+    Transaction transaction4 = new Transaction("Salário", new BigDecimal("600"), LocalDate.of(2018, Month.OCTOBER,25));
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenGetBalanceOnNullDate(){
@@ -27,7 +27,7 @@ public class CheckingAccountTest {
         CheckingAccount account = new CheckingAccount(
                 "My Account",
                 new BigDecimal("100"),
-                Arrays.asList(compra1,compra2,compra3,salario));
+                Arrays.asList(transaction1, transaction3, transaction2, transaction4));
 
         BigDecimal givenBalance = account.getBalanceOn(LocalDate.of(2018,Month.OCTOBER,25));
         BigDecimal expected = new BigDecimal("350.0");
@@ -40,7 +40,7 @@ public class CheckingAccountTest {
         CheckingAccount account = new CheckingAccount(
                 "My Account",
                 new BigDecimal("100"),
-                Arrays.asList(compra1,compra2,compra3,salario));
+                Arrays.asList(transaction1, transaction3, transaction2, transaction4));
         BigDecimal givenBalance = account.getBalanceOn(LocalDate.now());
         assertEquals(new BigDecimal("-250.0"), givenBalance);
     }
@@ -50,7 +50,7 @@ public class CheckingAccountTest {
         CheckingAccount account = new CheckingAccount(
                 "My Account",
                 new BigDecimal("100"),
-                Arrays.asList(compra1,compra2,compra3,salario));
+                Arrays.asList(transaction1, transaction3, transaction2, transaction4));
 
         BigDecimal givenBalance = account.getBalanceOn(LocalDate.of(2018,Month.OCTOBER,22));
         BigDecimal expected = new BigDecimal("100");
