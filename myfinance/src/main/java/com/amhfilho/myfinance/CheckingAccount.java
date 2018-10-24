@@ -26,12 +26,12 @@ public class CheckingAccount {
     private BigDecimal balance;
 
     /**
-     * The list of the operations of this account. Could be at any date range, from past or future
+     * The list of the transactions of this account. Could be at any date range, from past or future
      */
-    private List<Operation> operations;
+    private List<Transaction> transactions;
 
     /**
-     * Returns the balance for this account on specific date, calculated by the operations of this account
+     * Returns the balance for this account on specific date, calculated by the transactions of this account
      * @param date the given date of the Balance requested
      * @return the Balance for this date
      */
@@ -39,10 +39,10 @@ public class CheckingAccount {
         if(date==null) throw new IllegalArgumentException("Date must not be null");
         if(date.isBefore(LocalDate.now())) return this.balance;
 
-        Collections.sort(this.operations);
+        Collections.sort(this.transactions);
         BigDecimal tempBalance = BigDecimal.valueOf(this.balance.doubleValue());
         DateRange dateRange = new DateRange(date, LocalDate.now());
-        for(Operation o: this.operations){
+        for(Transaction o: this.transactions){
             if(dateRange.contains(o.getDate())){
                 tempBalance = tempBalance.add(o.getValue());
             }
@@ -57,7 +57,7 @@ public class CheckingAccount {
     public CheckingAccount(String name) {
         this.name = name;
         this.balance = new BigDecimal("0");
-        this.operations = new ArrayList<>();
+        this.transactions = new ArrayList<>();
     }
 
     /**
@@ -68,43 +68,43 @@ public class CheckingAccount {
     public CheckingAccount(String name, BigDecimal balance) {
         this.name = name;
         this.balance = balance;
-        this.operations = new ArrayList<>();
+        this.transactions = new ArrayList<>();
     }
 
     /**
      * Creates a CheckingAccount with a given name, balance and operation list
      * @param name the name of this CheckingAccount
      * @param balance the initial balance, represents the balance of the account now
-     * @param operations the List of the operations
+     * @param transactions the List of the transactions
      */
-    public CheckingAccount(String name, BigDecimal balance, List<Operation> operations) {
+    public CheckingAccount(String name, BigDecimal balance, List<Transaction> transactions) {
         this.name = name;
         this.balance = balance;
-        this.operations = operations;
+        this.transactions = transactions;
     }
 
     /**
-     * Add a list of operations to the current list
-     * @param operations the list of operations to be added
+     * Add a list of transactions to the current list
+     * @param transactions the list of transactions to be added
      */
-    public void addOperations(List<Operation> operations){
-        this.operations.addAll(operations);
+    public void addOperations(List<Transaction> transactions){
+        this.transactions.addAll(transactions);
     }
 
     /**
-     * Add a single operation to the current list
-     * @param operation the operation to be added
+     * Add a single transaction to the current list
+     * @param transaction the transaction to be added
      */
-    public void addOperation(Operation operation){
-        this.operations.add(operation);
+    public void addOperation(Transaction transaction){
+        this.transactions.add(transaction);
     }
 
     /**
-     * Removes an operation from the list
-     * @param operation the operation to be removed
+     * Removes an transaction from the list
+     * @param transaction the transaction to be removed
      */
-    public void removeOperation(Operation operation){
-        this.operations.remove(operation);
+    public void removeOperation(Transaction transaction){
+        this.transactions.remove(transaction);
     }
 
     public String getName() {
@@ -119,11 +119,11 @@ public class CheckingAccount {
         this.balance = balance;
     }
 
-    public List<Operation> getOperations() {
-        return operations;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

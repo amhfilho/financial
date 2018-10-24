@@ -11,10 +11,10 @@ import static org.junit.Assert.assertEquals;
 
 public class CheckingAccountTest {
 
-    Operation compra1 = new Operation("Compra 1", new BigDecimal("-200"), LocalDate.of(2018, Month.OCTOBER,23));
-    Operation compra3 = new Operation("Compra 3", new BigDecimal("-150"), LocalDate.of(2018, Month.OCTOBER,23));
-    Operation compra2 = new Operation("Compra 2", new BigDecimal("-300"), LocalDate.of(2018, Month.OCTOBER,22));
-    Operation salario = new Operation("Salário", new BigDecimal("600"), LocalDate.of(2018, Month.OCTOBER,25));
+    Transaction compra1 = new Transaction("Compra 1", new BigDecimal("-200"), LocalDate.of(2018, Month.OCTOBER,23));
+    Transaction compra3 = new Transaction("Compra 3", new BigDecimal("-150"), LocalDate.of(2018, Month.OCTOBER,23));
+    Transaction compra2 = new Transaction("Compra 2", new BigDecimal("-300"), LocalDate.of(2018, Month.OCTOBER,22));
+    Transaction salario = new Transaction("Salário", new BigDecimal("600"), LocalDate.of(2018, Month.OCTOBER,25));
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenGetBalanceOnNullDate(){
