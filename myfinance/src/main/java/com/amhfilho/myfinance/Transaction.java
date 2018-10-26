@@ -16,18 +16,19 @@ public class Transaction implements Comparable<Transaction>{
     private String description;
     private BigDecimal value;
     private LocalDate date;
+    private TransactionType type;
 
     /**
      * Default constructor per JPA requirements
      */
     protected Transaction(){}
 
-    public Transaction(String description, BigDecimal value, LocalDate date) {
+    public Transaction(String description, BigDecimal value, LocalDate date, TransactionType type) {
         this.description = description;
         this.value = value;
         this.date = date;
+        this.type = type;
     }
-
 
     @Override
     public String toString() {
@@ -36,6 +37,7 @@ public class Transaction implements Comparable<Transaction>{
                 ", description='" + description + '\'' +
                 ", value=" + value +
                 ", date=" + date +
+                ", type=" + type +
                 '}';
     }
 
