@@ -1,5 +1,11 @@
 package com.amhfilho.myfinance;
 
+import com.amhfilho.myfinance.operation.Operation;
+import com.amhfilho.myfinance.operation.OperationRepository;
+import com.amhfilho.myfinance.transaction.Transaction;
+import com.amhfilho.myfinance.transaction.TransactionRepository;
+import com.amhfilho.myfinance.transaction.TransactionService;
+import com.amhfilho.myfinance.transaction.TransactionType;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -18,7 +24,7 @@ public class FinancialPlannerTest {
     public void shouldReturnValidTransactionsForOctober(){
         //Given 2 Operations
         Operation rent = new Operation("House Rent", new BigDecimal("2000.0"),30);
-        Operation condo = new Operation("Condominium Fee", new BigDecimal("1800.0"),11 );
+        Operation condo = new Operation("Condominium Fee", new BigDecimal("1800.0"),11);
 
         //Given 2 transactions
         Transaction purchase1 = new Transaction("Purchase 1", new BigDecimal("200.0"), LocalDate.of(2018, Month.OCTOBER,24), TransactionType.VARIABLE);
@@ -27,8 +33,9 @@ public class FinancialPlannerTest {
 
         //given FinancialPlannerTest
         TransactionRepository transactionRepository = new TransactionRepositoryTestImpl(Arrays.asList(purchase1,purchase2,purchase3));
+        TransactionService transactionService = new TransactionServiceTestImpl(transactionRepository);
         OperationRepository operationRepository = new OperationRepositoryTestImpl(Arrays.asList(rent,condo));
-        FinancialPlanner financialPlanner = new FinancialPlanner(YearMonth.of(2018, Month.OCTOBER), operationRepository, transactionRepository);
+        FinancialPlanner financialPlanner = new FinancialPlanner(YearMonth.of(2018, Month.OCTOBER), operationRepository, transactionService);
 
         //when query for transactions
         List<Transaction> transactions = financialPlanner.getTransactions();

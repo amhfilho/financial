@@ -1,5 +1,8 @@
 package com.amhfilho.myfinance;
 
+import com.amhfilho.myfinance.operation.Operation;
+import com.amhfilho.myfinance.operation.OperationRepository;
+
 import java.util.List;
 
 public class OperationRepositoryTestImpl implements OperationRepository {

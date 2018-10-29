@@ -1,8 +1,10 @@
-package com.amhfilho.myfinance;
+package com.amhfilho.myfinance.operation;
+
+import com.amhfilho.myfinance.transaction.Transaction;
+import com.amhfilho.myfinance.transaction.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.time.YearMonth;
 import java.util.Objects;
 
@@ -28,7 +30,7 @@ public class Operation {
 
     public Transaction getTransactionFor(YearMonth yearMonth) {
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), getDueDate());
-        return new Transaction(getDescription(), getValue(), date);
+        return new Transaction(getDescription(), getValue(), date, TransactionType.FIXED);
     }
 
     @Override

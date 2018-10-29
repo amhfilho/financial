@@ -1,10 +1,8 @@
-package com.amhfilho.myfinance;
+package com.amhfilho.myfinance.transaction;
 
 import java.time.YearMonth;
 import java.util.List;
 
-public interface TransactionRepository {
-    List<Transaction> findAll();
-
+public interface TransactionService {
     List<Transaction> findByMonth(YearMonth month);
 }

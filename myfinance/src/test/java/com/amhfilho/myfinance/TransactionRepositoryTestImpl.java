@@ -1,10 +1,10 @@
 package com.amhfilho.myfinance;
 
-import java.time.YearMonth;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.amhfilho.myfinance.transaction.Transaction;
 
-public class TransactionRepositoryTestImpl implements TransactionRepository {
+import java.util.List;
+
+public class TransactionRepositoryTestImpl extends TransactionRepositoryAdapter {
 
     private List<Transaction> transactions;
 
@@ -15,13 +15,5 @@ public class TransactionRepositoryTestImpl implements TransactionRepository {
     @Override
     public List<Transaction> findAll() {
         return this.transactions;
-    }
-
-    @Override
-    public List<Transaction> findByMonth(YearMonth month) {
-        return this.transactions
-                .stream()
-                .filter(t -> t.getDate().getYear()==month.getYear() && t.getDate().getMonth()==month.getMonth())
-                .collect(Collectors.toList());
     }
 }

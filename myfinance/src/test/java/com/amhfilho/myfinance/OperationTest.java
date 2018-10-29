@@ -1,5 +1,7 @@
 package com.amhfilho.myfinance;
 
+import com.amhfilho.myfinance.operation.Operation;
+import com.amhfilho.myfinance.transaction.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;
