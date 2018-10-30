@@ -1,4 +1,4 @@
-package com.amhfilho.myfinance;
+package com.amhfilho.myfinance.operation;
 
 import com.amhfilho.myfinance.operation.Operation;
 import com.amhfilho.myfinance.transaction.Transaction;

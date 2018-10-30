@@ -1,0 +1,12 @@
+2018-10-29 23:00:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TRANSACTION" not found; SQL statement:
+drop table transaction [42102-194]
+2018-10-29 23:02:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TRANSACTION" not found; SQL statement:
+drop table transaction [42102-194]
+2018-10-29 23:04:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "JAVASCRIPT[*]:INS('TRANSACTION',TRUE) "; SQL statement:
+javascript:ins('TRANSACTION',true) [42000-194]
+2018-10-29 23:19:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "OPERATION" not found; SQL statement:
+drop table operation [42102-194]

@@ -1,6 +1,4 @@
-package com.amhfilho.myfinance;
-
-import com.amhfilho.myfinance.transaction.Transaction;
+package com.amhfilho.myfinance.transaction;
 
 import java.util.List;
 

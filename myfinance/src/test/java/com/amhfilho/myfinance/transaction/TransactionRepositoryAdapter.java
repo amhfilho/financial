@@ -1,4 +1,4 @@
-package com.amhfilho.myfinance;
+package com.amhfilho.myfinance.transaction;
 
 import com.amhfilho.myfinance.transaction.Transaction;
 import com.amhfilho.myfinance.transaction.TransactionRepository;

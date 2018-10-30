@@ -3,6 +3,10 @@ package com.amhfilho.myfinance.operation;
 import com.amhfilho.myfinance.transaction.Transaction;
 import com.amhfilho.myfinance.transaction.TransactionType;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -11,12 +15,17 @@ import java.util.Objects;
 /**
  * Financial operation, that could result in one or more Transaction
  */
+@Entity
 public class Operation {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
     private BigDecimal value;
     private Integer dueDate;
+
+    protected Operation(){}
 
     public Operation(String description, BigDecimal value, Integer dueDate) {
         if(description == null || value == null || dueDate == null || dueDate < 1 || dueDate > 31){
@@ -70,5 +79,17 @@ public class Operation {
 
     public Integer getDueDate() {
         return dueDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public void setDueDate(Integer dueDate) {
+        this.dueDate = dueDate;
     }
 }

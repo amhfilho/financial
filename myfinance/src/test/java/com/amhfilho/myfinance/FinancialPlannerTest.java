@@ -2,10 +2,8 @@ package com.amhfilho.myfinance;
 
 import com.amhfilho.myfinance.operation.Operation;
 import com.amhfilho.myfinance.operation.OperationRepository;
-import com.amhfilho.myfinance.transaction.Transaction;
-import com.amhfilho.myfinance.transaction.TransactionRepository;
-import com.amhfilho.myfinance.transaction.TransactionService;
-import com.amhfilho.myfinance.transaction.TransactionType;
+import com.amhfilho.myfinance.operation.OperationRepositoryTestImpl;
+import com.amhfilho.myfinance.transaction.*;
 import org.junit.Test;
 
 import java.math.BigDecimal;
