@@ -1,8 +1,5 @@
 package com.amhfilho.myfinance.transaction;
 
-import com.amhfilho.myfinance.transaction.Transaction;
-import com.amhfilho.myfinance.transaction.TransactionRepository;
-import com.amhfilho.myfinance.transaction.TransactionType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
