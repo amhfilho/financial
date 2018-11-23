@@ -19,5 +19,11 @@ public class PersistenceFactory {
         return em;
     }
 
+    public static void close(){
+        if(emf != null && emf.isOpen()){
+            emf.close();
+        }
+    }
+
 
 }
