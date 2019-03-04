@@ -38,6 +38,10 @@ public class Transaction implements Comparable<Transaction>{
         this.type = type;
     }
 
+    public static TransactionBuilder builder(){
+        return new TransactionBuilder();
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -83,5 +87,48 @@ public class Transaction implements Comparable<Transaction>{
         if (getDate() == null || o.getDate() == null)
             return 0;
         return getDate().compareTo(o.getDate());
+    }
+
+
+    public static class TransactionBuilder {
+        private String description;
+        private LocalDate date;
+        private BigDecimal value;
+        private RepeatOptions repeatOptions;
+
+
+        public TransactionBuilder withDescription(String description){
+            this.description = description;
+            return this;
+        }
+
+        public TransactionBuilder onDate(LocalDate date){
+            this.date = date;
+            return this;
+        }
+
+        public TransactionBuilder withAmount(BigDecimal value){
+            this.value = value;
+            return this;
+        }
+
+        public TransactionBuilder repeatedFor(RepeatOptions repeatOptions){
+            this.repeatOptions = repeatOptions;
+            return this;
+        }
+
+        public Transaction build(){
+            Transaction transaction = new Transaction();
+            transaction.date = date;
+            transaction.description = description;
+            transaction.value = value;
+            return transaction;
+        }
+
+
+
+
+
+
     }
 }
