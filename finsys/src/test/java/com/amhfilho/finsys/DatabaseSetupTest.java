@@ -30,8 +30,9 @@ public class DatabaseSetupTest {
     @Test
     public void createDatabaseTest(){
         EntityManager em = emf.createEntityManager();
-        String sql = "select * from transaction";
-        List<Transaction> result =  em.createNativeQuery(sql).getResultList();
+        String sql = "select c from FinancialCheck c";
+        List<Transaction> result =  em.createQuery(sql).getResultList();
+        result.forEach(x -> System.out.println(x));
         assertNotNull(result);
     }
 
