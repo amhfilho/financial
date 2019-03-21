@@ -1,6 +1,7 @@
 package com.amhfilho.finsys.transaction;
 
 import javax.persistence.EntityManager;
+import java.time.YearMonth;
 import java.util.List;
 
 public class DatabaseTransactionRepository implements TransactionRepository {
@@ -24,5 +25,10 @@ public class DatabaseTransactionRepository implements TransactionRepository {
     @Override
     public void remove(Transaction transaction) {
         em.remove(transaction);
+    }
+
+    @Override
+    public List<Transaction> findByMonth(YearMonth yearMonth) {
+        return null;
     }
 }
