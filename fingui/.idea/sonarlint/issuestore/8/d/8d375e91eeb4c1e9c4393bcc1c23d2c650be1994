@@ -1,0 +1,11 @@
+
+asquid:HiddenFieldCheckº"9Rename "table" which hides the field declared at line 34.(ÅŸž«ýÿÿÿÿ
+esquid:HiddenFieldCheckÏ"=Rename "yearMonth" which hides the field declared at line 44.(Ú¾Ôëûÿÿÿÿ
+@squid:S1068Æ")Remove this unused "frame" private field.(õ­Œ5
+bsquid:CommentedOutCodeLined"<This block of commented-out lines of code should be removed.(þâž
+Qsquid:S2130Ú"9Use "Integer.parseInt" for this string-to-int conversion.(Îî¸±
+Rsquid:S1161¹":Add the "@Override" annotation above this method signature(¿¥“Ð
+esquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(îˆÖè
+Dsquid:S3398Ô",Move this method into "ComboActionListener".(Ò»õ
+jsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(£òÛË
+@squid:S1948-")Make "service" transient or serializable.(Žš

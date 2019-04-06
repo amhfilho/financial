@@ -34,7 +34,6 @@ public class OperationFrame extends JFrame {
 	 */
 	public OperationFrame(OperationRepository repository) {
 		this.repository = repository;
-		//setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setTitle("Operations");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 797, 576);

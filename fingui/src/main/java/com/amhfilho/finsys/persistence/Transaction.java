@@ -16,7 +16,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Transaction {
+public class Transaction {//implements Comparable<Transaction>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,7 @@ public class Transaction {
 	private Status status;
 	
 	public String getInstallmentsDescription() {
+		if(totalInstallment == 0) return "-";
 		return actualInstallment + "/" + totalInstallment;
 	}
 	
@@ -51,7 +52,12 @@ public class Transaction {
 		this.description = description;
 		this.amount = amount;
 	}
-	
+
+//	@Override
+//	public int compareTo(Transaction o) {
+//		return this.getTransactionDate().compareTo(o.getTransactionDate());
+//	}
+
 	public enum Status {
 		PENDING, DONE, LATE;
 	}
