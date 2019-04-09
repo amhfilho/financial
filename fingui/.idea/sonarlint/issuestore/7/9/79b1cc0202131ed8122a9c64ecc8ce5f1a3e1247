@@ -1,7 +1,0 @@
-
-jsquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(¼»‘×úÿÿÿÿ
-Csquid:S1602;",Remove useless curly braces around statement(‘¨˜ß
-Fsquid:S1611;"/Remove the parentheses around the "e" parameter(‘¨˜ß
-Fsquid:S1611D"/Remove the parentheses around the "e" parameter(“Ä–²
-Hsquid:S1948",Make "repository" transient or serializable.(½£®ýÿÿÿÿ
-Ksquid:S1611S"/Remove the parentheses around the "e" parameter(çÄÇúýÿÿÿÿ
