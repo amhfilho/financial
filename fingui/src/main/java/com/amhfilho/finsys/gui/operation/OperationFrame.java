@@ -14,12 +14,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.amhfilho.finsys.gui.transaction.TransactionFrame;
+import com.amhfilho.finsys.gui.transaction.TransactionRepository;
 import com.amhfilho.finsys.persistence.Operation;
 import com.amhfilho.finsys.persistence.TransactionService;
 
 @SuppressWarnings("serial")
 public class OperationFrame extends JFrame {
-	private OperationRepository repository;
+	private OperationRepository operationRepository;
+	private TransactionRepository transactionRepository;
 
 	private JPanel contentPane;
 	private JTable table;
@@ -32,8 +34,9 @@ public class OperationFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OperationFrame(OperationRepository repository) {
-		this.repository = repository;
+	public OperationFrame(OperationRepository operationRepository, TransactionRepository transactionRepository) {
+		this.operationRepository = operationRepository;
+		this.transactionRepository = transactionRepository;
 		setTitle("Operations");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 797, 576);
@@ -57,7 +60,7 @@ public class OperationFrame extends JFrame {
 		
 		btnAdd = new JButton("Add...");
 		btnAdd.addActionListener((e) -> {
-			new OperationDialog(null,repository,this).setVisible(true);
+			new OperationDialog(null, operationRepository,this).setVisible(true);
 		});
 		buttonsPanel.add(btnAdd);
 		
@@ -72,7 +75,7 @@ public class OperationFrame extends JFrame {
 					"Cancel dialog",
 					JOptionPane.YES_NO_OPTION, 
 					JOptionPane.QUESTION_MESSAGE) == 0){
-				repository.delete(getSelectedOperation());
+				operationRepository.delete(getSelectedOperation());
 				loadOperations();
 			
 			}
@@ -81,7 +84,7 @@ public class OperationFrame extends JFrame {
 		btnForecast = new JButton("Forecast...");
 		buttonsPanel.add(btnForecast);
 		btnForecast.addActionListener((e)->{
-			TransactionFrame frame = new TransactionFrame(new TransactionService(repository));
+			TransactionFrame frame = new TransactionFrame(new TransactionService(operationRepository, transactionRepository));
 			YearMonth yearMonth = YearMonth.from(LocalDate.now());
 			frame.updateTransactions(yearMonth);
 			frame.setVisible(true);
@@ -90,13 +93,13 @@ public class OperationFrame extends JFrame {
 	}
 	
 	protected void loadOperations() {
-		OperationTableModel model = new OperationTableModel(this.repository.findAll());
+		OperationTableModel model = new OperationTableModel(this.operationRepository.findAll());
 		table.setModel(model);
 	}
 	
 	protected void editOperation() {
 		 Operation operation =  getSelectedOperation();
-		 new OperationDialog(operation, repository, this).setVisible(true);
+		 new OperationDialog(operation, operationRepository, this).setVisible(true);
 	}
 	
 	protected void setEnableDeleteButton(boolean enable) {

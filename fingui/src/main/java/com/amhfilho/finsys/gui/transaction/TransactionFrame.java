@@ -172,8 +172,8 @@ public class TransactionFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			TransactionDialog dialog = new TransactionDialog(frame,null);
-			dialog.setVisible(true);
+//			TransactionDialog dialog = new TransactionDialog(frame,null);
+////			dialog.setVisible(true);
 		}
 	}
 	
@@ -221,6 +221,10 @@ public class TransactionFrame extends JFrame {
 		throw new IllegalArgumentException("Invalid JComboBox. Expecting either cmbMonth or cmbYear");
 		
 	}
+
+	public void save(Transaction transaction){
+	    service.save(transaction);
+    }
 	
 	
 }
