@@ -1,22 +1,17 @@
 package com.amhfilho.finsys.persistence;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 @Entity
 @Getter
 @Setter
-public class Transaction {//implements Comparable<Transaction>{
+public class Transaction {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +28,9 @@ public class Transaction {//implements Comparable<Transaction>{
 	private Integer totalInstallment;
 	
 	private Status status;
+
+	@Transient
+	private BigDecimal balance = new BigDecimal("0");
 	
 	public String getInstallmentsDescription() {
 		if(totalInstallment == 0) return "-";
@@ -52,11 +50,6 @@ public class Transaction {//implements Comparable<Transaction>{
 		this.description = description;
 		this.amount = amount;
 	}
-
-//	@Override
-//	public int compareTo(Transaction o) {
-//		return this.getTransactionDate().compareTo(o.getTransactionDate());
-//	}
 
 	public enum Status {
 		PENDING, DONE, LATE;

@@ -1,31 +1,24 @@
 package com.amhfilho.finsys.gui.transaction;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Point;
+import com.amhfilho.finsys.CollectionUtils;
+import com.amhfilho.finsys.gui.category.Categories;
+import com.amhfilho.finsys.persistence.Transaction;
+import com.amhfilho.finsys.persistence.TransactionService;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
-
-import com.amhfilho.finsys.persistence.Transaction;
-import com.amhfilho.finsys.persistence.TransactionService;
 
 @SuppressWarnings("serial")
 public class TransactionFrame extends JFrame {
@@ -33,7 +26,7 @@ public class TransactionFrame extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JPanel pnlButtons;
-	private JButton btnAdd;
+	private JButton categoriesButton;
 	private JPanel pnlTotals;
 	private JLabel lblTotalDebitResult; 
 	private JLabel lblTotalCredit;
@@ -44,13 +37,25 @@ public class TransactionFrame extends JFrame {
 	private YearMonth yearMonth;
 	private TransactionService service;
 	private JComboBox cmbYear;
+	private JTextField balance;
+	private JButton balanceUpdate;
+
+	private List<Transaction> transactions;
 	
 	public void setTransactions(List<Transaction> transactions) {
+	    this.transactions=transactions;
 		TransactionTableModel model = new TransactionTableModel(transactions);
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
 		lblTotalCreditResult.setText(model.getTotalCredit().toString());
 		lblTotalDebitResult.setText(model.getTotalDebit().toString());
 		lblBalanceResult.setText(model.getTotal().toString());
+		if(model.getTotal().doubleValue() >= 0){
+			lblBalanceResult.setForeground(Color.BLUE);
+		}
+		else {
+			lblBalanceResult.setForeground(Color.RED);
+		}
 	}
 	
 	public void updateTransactions(YearMonth yearMonth) {
@@ -59,10 +64,14 @@ public class TransactionFrame extends JFrame {
 		setTransactions(transactions);
 		cmbMonth.setSelectedIndex(yearMonth.getMonthValue()-1);
 		cmbYear.setSelectedItem(yearMonth.getYear());
-		if(cmbYear.getActionListeners() == null || cmbYear.getActionListeners().length == 0)
-			cmbYear.addActionListener(new ComboActionListener(this));
-		if(cmbMonth.getActionListeners() == null || cmbMonth.getActionListeners().length == 0)
-			cmbMonth.addActionListener(new ComboActionListener(this));
+		if(CollectionUtils.isNullOrEmpty(cmbYear.getActionListeners()))
+			cmbYear.addActionListener(new ComboActionListener());
+		if(CollectionUtils.isNullOrEmpty(cmbMonth.getActionListeners()))
+			cmbMonth.addActionListener(new ComboActionListener());
+		if(CollectionUtils.isNullOrEmpty(categoriesButton.getActionListeners()))
+			categoriesButton.addActionListener((e -> {
+				new Categories(transactions).setVisible(true);
+			}));
 		
 	}
 	
@@ -77,7 +86,7 @@ public class TransactionFrame extends JFrame {
 		this.service = transactionService;
 		setTitle("Transactions");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 350);
+		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -94,10 +103,10 @@ public class TransactionFrame extends JFrame {
 		pnlButtons = new JPanel();
 		contentPane.add(pnlButtons, BorderLayout.NORTH);
 
-		btnAdd = new JButton("Add...");
-		pnlButtons.add(btnAdd);
+		categoriesButton = new JButton("Categories...");
+		pnlButtons.add(categoriesButton);
+
 		
-		//String[] months = {"January","February","March","April","June","July","August","September","October","November","December"};
 		String[] months = new DateFormatSymbols().getMonths();
 		cmbMonth = new JComboBox(months);
 		cmbMonth.setName("monthCombo");
@@ -109,6 +118,15 @@ public class TransactionFrame extends JFrame {
 		cmbYear.setName("yearCombo");
 		
 		pnlButtons.add(cmbYear);
+
+		balance = new JTextField(8);
+		pnlButtons.add(balance);
+
+		balanceUpdate = new JButton("Update");
+		pnlButtons.add(balanceUpdate);
+		balanceUpdate.addActionListener((e)->{
+			updateBalance();
+		});
 		
 		pnlTotals = new JPanel();
 		contentPane.add(pnlTotals, BorderLayout.SOUTH);
@@ -116,13 +134,9 @@ public class TransactionFrame extends JFrame {
 		JLabel lblTotalDebit = new JLabel("Total debit:");
 		
 		lblTotalDebitResult = new JLabel("...");
-		lblTotalDebitResult.setForeground(Color.RED);
-		
 		lblTotalCredit = new JLabel("Total credit:");
 		
 		lblTotalCreditResult = new JLabel("...");
-		lblTotalCreditResult.setForeground(Color.BLUE);
-		
 		lblBalanceResult = new JLabel("...");
 		
 		lblBalance = new JLabel("Balance:");
@@ -159,23 +173,26 @@ public class TransactionFrame extends JFrame {
 						.addComponent(lblBalance)))
 		);
 		pnlTotals.setLayout(gl_pnlTotals);
-		btnAdd.addActionListener(new AddButtonActionListener(this));
-		
-	}
-	
-	class AddButtonActionListener implements ActionListener {
-		private TransactionFrame frame;
-		
-		public AddButtonActionListener(TransactionFrame frame) {
-			this.frame = frame;
-		}
 
-		@Override
-		public void actionPerformed(ActionEvent event) {
-//			TransactionDialog dialog = new TransactionDialog(frame,null);
-////			dialog.setVisible(true);
-		}
 	}
+
+	private void updateBalance(){
+        BigDecimal balanceValue = new BigDecimal(balance.getText());
+        for(int i = 0; i < transactions.size(); i++){
+            Transaction t = transactions.get(i);
+            if(t.getTransactionDate().isEqual(LocalDate.now())){
+                t.setBalance(balanceValue.add(t.getAmount()));
+                if(i < transactions.size()){
+                    for(int j = i+1; j < transactions.size(); j++){
+                        Transaction tj = transactions.get(j);
+                        BigDecimal newBalance = transactions.get(j-1).getBalance().add(tj.getAmount());
+                        tj.setBalance(newBalance);
+                    }
+                }
+            }
+        }
+        setTransactions(transactions);
+    }
 	
 	class TableMouseListener extends MouseAdapter {
 		private TransactionFrame frame;
@@ -195,11 +212,6 @@ public class TransactionFrame extends JFrame {
 	}
 	
 	class ComboActionListener implements ActionListener {
-		private TransactionFrame frame;
-		
-		public ComboActionListener(TransactionFrame frame) {
-			this.frame = frame;
-		}
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {

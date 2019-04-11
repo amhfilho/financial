@@ -37,4 +37,13 @@ public class DatabaseTransactionRepository implements TransactionRepository {
         q.setParameter("end", end);
         return q.getResultList();
     }
+
+    @Override
+    public List<Transaction> findLate(YearMonth yearMonth) {
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        String sql = "select t from Transaction t where t.transactionDate < :date";
+        Query q = em.createQuery(sql, Transaction.class);
+        q.setParameter("date",date);
+        return q.getResultList();
+    }
 }

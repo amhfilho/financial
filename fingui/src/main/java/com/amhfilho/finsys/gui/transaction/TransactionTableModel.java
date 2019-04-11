@@ -1,18 +1,14 @@
 package com.amhfilho.finsys.gui.transaction;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.amhfilho.finsys.persistence.Transaction;
 
 import javax.swing.table.AbstractTableModel;
-
-import com.amhfilho.finsys.persistence.Transaction;
+import java.math.BigDecimal;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class TransactionTableModel extends AbstractTableModel {
-	private static final String[] columnNames = { "Date", "Description", "Amount", "Installments", "Status", "Category" };
+	private static final String[] columnNames = { "Date", "Description", "Amount", "Installments", "Status", "Category", "Balance" };
 
 	private List<Transaction> transactions;
 
@@ -57,6 +53,9 @@ public class TransactionTableModel extends AbstractTableModel {
 				return t.getStatus();
 			case 5:
 				return t.getOperation().getCategory();
+			case 6:
+				return t.getBalance();
+
 		}
 		return null;
 	}
@@ -93,23 +92,4 @@ public class TransactionTableModel extends AbstractTableModel {
 		}
 		return total;
 	}
-
-	public Map<String, BigDecimal> getCategories(){
-		Map<String, BigDecimal> categories = new HashMap<>();
-		transactions.forEach(x ->{
-			final String category = x.getOperation().getCategory();
-			if(categories.containsKey(category)){
-				BigDecimal amount = categories.get(category).add(x.getAmount());
-				categories.remove(category);
-				categories.put(category,amount);
-			}
-			categories.put(category,x.getAmount());
-		});
-
-		return categories;
-
-	}
-
-
-
 }
