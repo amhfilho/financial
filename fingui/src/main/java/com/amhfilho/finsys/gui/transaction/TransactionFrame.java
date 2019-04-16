@@ -216,7 +216,8 @@ public class TransactionFrame extends JFrame {
 	        int row = table.rowAtPoint(point);
 	        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
 	            TransactionTableModel model = (TransactionTableModel) table.getModel();
-	            Transaction selected = model.getTransaction(row);
+	            int newRow = table.convertRowIndexToModel(row);
+	            Transaction selected = model.getTransaction(newRow);
 	            new TransactionDialog(frame,selected).setVisible(true);
 	        }
 	    }

@@ -108,7 +108,8 @@ public class OperationFrame extends JFrame {
 	}
 	
 	private Operation getSelectedOperation() {
-		return ((OperationTableModel)table.getModel()).getOperationAtRow(table.getSelectedRow());
+		int row = table.convertRowIndexToModel(table.getSelectedRow());
+		return ((OperationTableModel)table.getModel()).getOperationAtRow(row);
 	}
 
 }
