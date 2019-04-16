@@ -3,6 +3,8 @@ package com.amhfilho.finsys.persistence;
 import com.amhfilho.finsys.gui.operation.OperationRepository;
 import com.amhfilho.finsys.gui.transaction.TransactionRepository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -38,8 +40,33 @@ public class TransactionService {
 		return false;
 	}
 
+	public BigDecimal getTotalDebitLateTransactions(){
+        return getSumAmount(transactionRepository.findDebitLate());
+    }
+
+    public BigDecimal getTotalCreditLateTransactions(){
+        return getSumAmount(transactionRepository.findCreditLate());
+    }
+
+    private BigDecimal getSumAmount(List<Transaction> transactions){
+        BigDecimal total = new BigDecimal("0");
+        for(Transaction t: transactions){
+            total = total.add(t.getAmount());
+        }
+        return total;
+    }
+
 	public Transaction save(Transaction transaction){
 		return transactionRepository.save(transaction);
 	}
+
+	public List<Transaction> getTransactionsWithBalance(List<Transaction> transactions, BigDecimal balance){
+        transactions.sort(Comparator.comparing(Transaction::getTransactionDate));
+        for(Transaction t:transactions){
+            balance = balance.add(t.getAmount());
+            t.setBalance(balance);
+        }
+	    return transactions;
+    }
 
 }

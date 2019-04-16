@@ -26,7 +26,8 @@ public class Transaction {
 	private Integer actualInstallment;
 	
 	private Integer totalInstallment;
-	
+
+	@Enumerated(EnumType.ORDINAL)
 	private Status status;
 
 	@Transient

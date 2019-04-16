@@ -1116,3 +1116,6 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Mul
 	at org.h2.mvstore.FileStore.open(FileStore.java:173)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:350)
 	... 61 more
+2019-04-15 11:56:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Data conversion error converting "com.amhfilho.finsys.persistence.Transaction.Status.LATE"; SQL statement:
+select transactio0_.id as id1_1_, transactio0_.actualInstallment as actualIn2_1_, transactio0_.amount as amount3_1_, transactio0_.description as descript4_1_, transactio0_.operation_id as operatio8_1_, transactio0_.status as status5_1_, transactio0_.totalInstallment as totalIns6_1_, transactio0_.transactionDate as transact7_1_ from Transaction transactio0_ where transactio0_.status='com.amhfilho.finsys.persistence.Transaction.Status.LATE' and transactio0_.amount<0 [22018-197]

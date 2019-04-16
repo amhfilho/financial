@@ -10,15 +10,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("serial")
 public class TransactionFrame extends JFrame {
@@ -31,6 +29,8 @@ public class TransactionFrame extends JFrame {
 	private JLabel lblTotalDebitResult; 
 	private JLabel lblTotalCredit;
 	private JLabel lblTotalCreditResult;
+	private JLabel lblTotalDebitLate;
+	private JLabel lblTotalDebitLateResult;
 	private JLabel lblBalanceResult;
 	private JLabel lblBalance;
 	private JComboBox<String> cmbMonth;
@@ -39,6 +39,7 @@ public class TransactionFrame extends JFrame {
 	private JComboBox cmbYear;
 	private JTextField balance;
 	private JButton balanceUpdate;
+	private JCheckBox checkBox;
 
 	private List<Transaction> transactions;
 	
@@ -56,6 +57,7 @@ public class TransactionFrame extends JFrame {
 		else {
 			lblBalanceResult.setForeground(Color.RED);
 		}
+		lblTotalDebitLateResult.setText(service.getTotalDebitLateTransactions().toString());
 	}
 	
 	public void updateTransactions(YearMonth yearMonth) {
@@ -98,6 +100,7 @@ public class TransactionFrame extends JFrame {
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.addMouseListener(new TableMouseListener(this));
+		table.setAutoCreateRowSorter(true);
 		scrollPane.setViewportView(table);
 
 		pnlButtons = new JPanel();
@@ -127,7 +130,25 @@ public class TransactionFrame extends JFrame {
 		balanceUpdate.addActionListener((e)->{
 			updateBalance();
 		});
-		
+
+		lblTotalDebitLate = new JLabel("Debit Late:");
+		lblTotalDebitLateResult = new JLabel();
+		pnlButtons.add(lblTotalDebitLate);
+		pnlButtons.add(lblTotalDebitLateResult);
+
+		checkBox = new JCheckBox("Show only PENDING");
+		pnlButtons.add(checkBox);
+		checkBox.addItemListener((e)->{
+			if(e.getStateChange() == ItemEvent.SELECTED){
+				List<Transaction> pendingTransactions = transactions.stream()
+						.filter(t -> t.getStatus().equals(Transaction.Status.PENDING))
+						.collect(Collectors.toList());
+				table.setModel(new TransactionTableModel(pendingTransactions));
+			} else {
+				table.setModel(new TransactionTableModel(transactions));
+			}
+		});
+
 		pnlTotals = new JPanel();
 		contentPane.add(pnlTotals, BorderLayout.SOUTH);
 		
@@ -178,20 +199,10 @@ public class TransactionFrame extends JFrame {
 
 	private void updateBalance(){
         BigDecimal balanceValue = new BigDecimal(balance.getText());
-        for(int i = 0; i < transactions.size(); i++){
-            Transaction t = transactions.get(i);
-            if(t.getTransactionDate().isEqual(LocalDate.now())){
-                t.setBalance(balanceValue.add(t.getAmount()));
-                if(i < transactions.size()){
-                    for(int j = i+1; j < transactions.size(); j++){
-                        Transaction tj = transactions.get(j);
-                        BigDecimal newBalance = transactions.get(j-1).getBalance().add(tj.getAmount());
-                        tj.setBalance(newBalance);
-                    }
-                }
-            }
-        }
-        setTransactions(transactions);
+        List<Transaction> pendingTransactions = transactions.stream()
+				.filter(t -> t.getStatus().equals(Transaction.Status.PENDING))
+				.collect(Collectors.toList());
+        table.setModel(new TransactionTableModel(service.getTransactionsWithBalance(pendingTransactions,balanceValue)));
     }
 	
 	class TableMouseListener extends MouseAdapter {

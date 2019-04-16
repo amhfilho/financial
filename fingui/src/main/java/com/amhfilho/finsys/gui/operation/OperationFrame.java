@@ -50,6 +50,7 @@ public class OperationFrame extends JFrame {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		table.setAutoCreateRowSorter(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.addMouseListener(new OperationTableMouseListener(this));
 		table.getSelectionModel().addListSelectionListener(new OperationTableSelectionListener(this));

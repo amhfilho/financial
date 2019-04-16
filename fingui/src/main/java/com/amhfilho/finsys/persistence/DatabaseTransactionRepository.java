@@ -46,4 +46,20 @@ public class DatabaseTransactionRepository implements TransactionRepository {
         q.setParameter("date",date);
         return q.getResultList();
     }
+
+    @Override
+    public List<Transaction> findDebitLate() {
+        String sql = "select t from Transaction t " +
+                "where t.status = com.amhfilho.finsys.persistence.Transaction$Status.LATE " +
+                "AND t.amount < 0";
+        return em.createQuery(sql, Transaction.class).getResultList();
+    }
+
+    @Override
+    public List<Transaction> findCreditLate() {
+        String sql = "select t from Transaction t " +
+                "where t.status = com.amhfilho.finsys.persistence.Transaction$Status.LATE " +
+                "AND t.amount >= 0";
+        return em.createQuery(sql, Transaction.class).getResultList();
+    }
 }
