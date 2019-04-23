@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,10 +79,7 @@ public class TransactionFrame extends JFrame {
 	public void updateTransactionsForCurrentMonth() {
 		updateTransactions(this.yearMonth);
 	}
-	
-	
 
-	
 	public TransactionFrame(TransactionService transactionService) {
 		this.service = transactionService;
 		setTitle("Transactions");
@@ -98,9 +94,26 @@ public class TransactionFrame extends JFrame {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.addMouseListener(new TableMouseListener(this));
 		table.setAutoCreateRowSorter(true);
+		table.getSelectionModel().addListSelectionListener((e)->{
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			StringBuilder output = new StringBuilder();
+			if (lsm.isSelectionEmpty()) {
+				output.append(" <none>");
+			} else {
+				// Find out which indexes are selected.
+				int minIndex = lsm.getMinSelectionIndex();
+				int maxIndex = lsm.getMaxSelectionIndex();
+				for (int i = minIndex; i <= maxIndex; i++) {
+					if (lsm.isSelectedIndex(i)) {
+						output.append(" " + i);
+					}
+				}
+			}
+			System.out.println(output.toString());
+		});
 		scrollPane.setViewportView(table);
 
 		pnlButtons = new JPanel();
@@ -108,7 +121,6 @@ public class TransactionFrame extends JFrame {
 
 		categoriesButton = new JButton("Categories...");
 		pnlButtons.add(categoriesButton);
-
 		
 		String[] months = new DateFormatSymbols().getMonths();
 		cmbMonth = new JComboBox(months);
